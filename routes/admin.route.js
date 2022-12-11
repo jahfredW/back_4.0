@@ -7,9 +7,10 @@ module.exports = app => {
     // on utilise les méthodes signup et login de l'objet userController 
     router.get('/findall', auth,userCtrl.findAll);
     router.get('/find/:id', auth, userCtrl.findUser);
+    router.put('/update/:id', auth, userCtrl.update);
     router.post('/adduser', auth, userCtrl.signup);
-    router.delete('/deleteUser/:id', userCtrl.deleteById);
-    router.post('/findbyemail', userCtrl.findUserByEmail);
+    router.delete('/deleteUser/:id', auth, userCtrl.deleteById);
+    router.post('/findbyemail', auth,  userCtrl.findUserByEmail);
     
     // route principale 
     app.use("/api/admin", router);
