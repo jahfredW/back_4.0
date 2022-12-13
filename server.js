@@ -1,12 +1,26 @@
 // On importe express
 const express = require("express");
 const cors = require("cors");
-// const history = require("connect-history-api-fallback");
+const path = require('path')
+const history = require("connect-history-api-fallback");
 
 // 1 - récupèration d'une instance de express() dans app
 
 
 const app = express();
+
+const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
+
+app.use(staticFileMiddleware);
+app.use(history({
+  disableDotRule: true,
+  verbose: true
+}));
+app.use(staticFileMiddleware);
+
+app.get('/', function (req, res) {
+  res.render(path.join(__dirname + '/dist/index.html'));
+});
 
 //attention de turc fout la merde dans mes requêtes get ! 
 // Je dois désactiver le ' accept ' de ems requêtes.... 
@@ -78,6 +92,7 @@ require("./routes/user.route")(app);
 require("./routes/admin.route")(app);
 //On lance enfin le serveur, qui creéra la bdd de manière asynchrone
 console.log(process.env.NODE_ENV);
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}.`);
+var server = app.listen(process.env.PORT || 8080, function () {
+  var port = server.address().port;
+  console.log("App now running on port", port);
 });
